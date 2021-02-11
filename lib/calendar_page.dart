@@ -43,6 +43,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget _buildCalendar() {
     final ToDoService toDoService = Provider.of(context);
     return TableCalendar(
+      initialSelectedDay: null,
       calendarController: _calendarController,
       startingDayOfWeek: StartingDayOfWeek.monday,
       events: toDoService.asEvents,
@@ -55,7 +56,6 @@ class _CalendarPageState extends State<CalendarPage> {
         setState(() {
           selectedEvents = events;
         });
-        print("Selected events");
       },
     );
   }

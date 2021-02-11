@@ -35,7 +35,7 @@ class HomeTopBar extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           color: isExpanded ? Colors.green : null,
-          boxShadow: isExpanded ? [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, 10))] : null
+          boxShadow: isExpanded ? [BoxShadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10))] : null
         ),
         child: Row(
           mainAxisAlignment: isExpanded ? MainAxisAlignment.spaceAround : MainAxisAlignment.end,

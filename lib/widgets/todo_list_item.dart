@@ -42,8 +42,9 @@ class TodoListItem extends StatelessWidget {
         return true;
       },
       key: UniqueKey(),
-      background: Container(color: Colors.green),
+      background: Container(),
       secondaryBackground: Container(color: Colors.red),
+      direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         if(direction == DismissDirection.startToEnd) {
           this.todo.isCompleted = true;

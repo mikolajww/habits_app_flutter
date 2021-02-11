@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'arc_painter.dart';
 
 class PieChart extends StatelessWidget {
-  PieChart({this.width, this.height, this.percentCompleted});
+  PieChart({this.width, this.height, this.percentCompleted, this.strokeWidth = 35.0});
   double width;
   double height;
   double percentCompleted;
+  double strokeWidth;
   @override
   Widget build(BuildContext context) {
-    var strokeWidth = 35.0;
     Tween<double> tween = Tween(begin: 0, end: percentCompleted);
     return Stack(
       alignment: Alignment.center,
@@ -22,6 +22,7 @@ class PieChart extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
+              //boxShadow: [BoxShadow(color: Col, blurRadius: 10, ),]
             ),
           ),
         ),

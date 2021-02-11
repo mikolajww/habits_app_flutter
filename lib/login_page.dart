@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               ),
               FlatButton(onPressed: () async {
                 await googleAccountService.logout();
-              }, child: Text("Disconeeee"))
+              }, child: Text("Disconect"))
             ],
           ),
         ),

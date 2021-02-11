@@ -17,6 +17,8 @@ bool isTheSameDay(DateTime first, DateTime other) {
 abstract class _ToDoService with Store {
   static Random r = Random();
 
+  static List<String> defaultCategories = ["Work", "Personal"];
+
   @computed
   ObservableList<ToDoItem> get completedTodayTodos =>
       ObservableList.of(todayTodos.where((todo) => todo.isCompleted == true));
