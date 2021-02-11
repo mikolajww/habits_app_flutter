@@ -2,11 +2,7 @@ import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 class TodoListItem extends StatelessWidget {
   ToDoItem todo;

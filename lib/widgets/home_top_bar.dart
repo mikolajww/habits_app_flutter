@@ -62,9 +62,10 @@ class HomeTopBar extends StatelessWidget {
               child: ClipOval(
                 child: Container(
                   decoration: BoxDecoration(color: Colors.black26),
-                  child: Image.network(
+                  child: photoUrl != null?
+                  Image.network(
                     photoUrl,
-                  ),
+                  ): null,
                 ),
               ),
             )
