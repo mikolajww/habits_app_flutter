@@ -32,6 +32,21 @@ mixin _$ToDoItem on _ToDoItem, Store {
     });
   }
 
+  final _$descriptionAtom = Atom(name: '_ToDoItem.description');
+
+  @override
+  String get description {
+    _$descriptionAtom.reportRead();
+    return super.description;
+  }
+
+  @override
+  set description(String value) {
+    _$descriptionAtom.reportWrite(value, super.description, () {
+      super.description = value;
+    });
+  }
+
   final _$dateAtom = Atom(name: '_ToDoItem.date');
 
   @override
@@ -66,6 +81,7 @@ mixin _$ToDoItem on _ToDoItem, Store {
   String toString() {
     return '''
 name: ${name},
+description: ${description},
 date: ${date},
 isCompleted: ${isCompleted},
 getDateTime: ${getDateTime}

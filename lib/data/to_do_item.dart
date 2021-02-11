@@ -13,6 +13,9 @@ abstract class _ToDoItem with Store{
   String name;
 
   @observable
+  String description;
+
+  @observable
   String date;
 
   @observable
@@ -21,7 +24,7 @@ abstract class _ToDoItem with Store{
   @computed
   DateTime get getDateTime => df.parse(this.date);
 
-  _ToDoItem(this.name, this.isCompleted, DateTime date) {
+  _ToDoItem(this.name, this.description, this.isCompleted, DateTime date) {
     this.date = df.format(date);
   }
 

@@ -56,7 +56,7 @@ class TodoListItem extends StatelessWidget {
           activeColor: Colors.green,
           value: todo.isCompleted,
           title: Text(todo.name),
-          subtitle: Text('Lorem ipsum dolor sit amet'),
+          subtitle: Text(todo.description),
 
           onChanged: (newValue) {
             todo.isCompleted = newValue;

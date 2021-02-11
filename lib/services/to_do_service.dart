@@ -30,8 +30,8 @@ abstract class _ToDoService with Store {
   ObservableList<ToDoItem> todos =
       ObservableList.of(List.generate(10, (i) {
         var addDays = r.nextInt(10);
-        return ToDoItem("${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now().add(Duration(days: addDays)));
-      }) + List.generate(2, (i) => ToDoItem("${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now())));
+        return ToDoItem("${generateWordPairs().take(1)} $i", "${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now().add(Duration(days: addDays)));
+      }) + List.generate(2, (i) => ToDoItem("${generateWordPairs().take(1)} $i", "${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now())));
 
   @computed
   ObservableMap<DateTime, List> get asEvents {
@@ -52,8 +52,9 @@ abstract class _ToDoService with Store {
       ObservableList.of(todos.where((todo) => isTheSameDay(todo.getDateTime, DateTime.now())));
 
   @action
-  void addTodo(String description, bool isCompleted, DateTime dateTime) {
-    todos.add(ToDoItem(description, isCompleted, dateTime));
+  void addTodo(String title, String description, bool isCompleted, DateTime dateTime) {
+    todos.add(ToDoItem(title, description, isCompleted, dateTime));
+    print(todos);
   }
 
   @action

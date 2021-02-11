@@ -57,11 +57,12 @@ mixin _$ToDoService on _ToDoService, Store {
   final _$_ToDoServiceActionController = ActionController(name: '_ToDoService');
 
   @override
-  void addTodo(String description, bool isCompleted, DateTime dateTime) {
+  void addTodo(
+      String title, String description, bool isCompleted, DateTime dateTime) {
     final _$actionInfo = _$_ToDoServiceActionController.startAction(
         name: '_ToDoService.addTodo');
     try {
-      return super.addTodo(description, isCompleted, dateTime);
+      return super.addTodo(title, description, isCompleted, dateTime);
     } finally {
       _$_ToDoServiceActionController.endAction(_$actionInfo);
     }
