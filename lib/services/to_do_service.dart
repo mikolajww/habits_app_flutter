@@ -27,29 +27,26 @@ abstract class _ToDoService with Store {
   double get getPercentCompleteToday => completedTodayTodos.length / todayTodos.length;
 
   @observable
-  ObservableList<ToDoItem> todos =
-      ObservableList.of(List.generate(10, (i) {
-        var addDays = r.nextInt(10);
-        return ToDoItem("${generateWordPairs().take(1)} $i", "${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now().add(Duration(days: addDays)));
-      }) + List.generate(2, (i) => ToDoItem("${generateWordPairs().take(1)} $i", "${generateWordPairs().take(1)} $i", r.nextBool(), DateTime.now())));
+  ObservableList<ToDoItem> todos = ObservableList();
 
   @computed
   ObservableMap<DateTime, List> get asEvents {
     Map<DateTime, List> m = Map();
     todos.forEach((element) {
-      if(!m.containsKey(element.getDateTime)){
-        m.putIfAbsent(element.getDateTime, () => null);
-        m[element.getDateTime] = [];
+      var key = DateTime(element.date.year, element.date.month, element.date.day);
+      if(!m.containsKey(key)){
+        m.putIfAbsent(key, () => null);
+        m[key] = [];
       }
-      m[element.getDateTime].add(element);
+      m[key].add(element);
     });
+    print(m);
     return ObservableMap.of(m);
   }
 
-
   @computed
   ObservableList<ToDoItem> get todayTodos =>
-      ObservableList.of(todos.where((todo) => isTheSameDay(todo.getDateTime, DateTime.now())));
+      ObservableList.of(todos.where((todo) => isTheSameDay(todo.date, DateTime.now())));
 
   @action
   void addTodo(String title, String description, bool isCompleted, DateTime dateTime) {

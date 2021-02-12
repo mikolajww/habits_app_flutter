@@ -9,14 +9,6 @@ part of 'to_do_item.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ToDoItem on _ToDoItem, Store {
-  Computed<DateTime> _$getDateTimeComputed;
-
-  @override
-  DateTime get getDateTime =>
-      (_$getDateTimeComputed ??= Computed<DateTime>(() => super.getDateTime,
-              name: '_ToDoItem.getDateTime'))
-          .value;
-
   final _$nameAtom = Atom(name: '_ToDoItem.name');
 
   @override
@@ -50,13 +42,13 @@ mixin _$ToDoItem on _ToDoItem, Store {
   final _$dateAtom = Atom(name: '_ToDoItem.date');
 
   @override
-  String get date {
+  DateTime get date {
     _$dateAtom.reportRead();
     return super.date;
   }
 
   @override
-  set date(String value) {
+  set date(DateTime value) {
     _$dateAtom.reportWrite(value, super.date, () {
       super.date = value;
     });
@@ -83,8 +75,7 @@ mixin _$ToDoItem on _ToDoItem, Store {
 name: ${name},
 description: ${description},
 date: ${date},
-isCompleted: ${isCompleted},
-getDateTime: ${getDateTime}
+isCompleted: ${isCompleted}
     ''';
   }
 }
