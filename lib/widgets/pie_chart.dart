@@ -13,17 +13,15 @@ class PieChart extends StatelessWidget {
     Tween<double> tween = Tween(begin: 0, end: percentCompleted);
     return Stack(
       alignment: Alignment.center,
+      fit: StackFit.loose,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              //boxShadow: [BoxShadow(color: Col, blurRadius: 10, ),]
-            ),
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            //boxShadow: [BoxShadow(color: Col, blurRadius: 10, ),]
           ),
         ),
         SizedBox(
