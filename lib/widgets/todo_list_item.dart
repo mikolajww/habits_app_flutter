@@ -1,7 +1,9 @@
 import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/to_do_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TodoListItem extends StatelessWidget {
@@ -13,7 +15,7 @@ class TodoListItem extends StatelessWidget {
     final ToDoService toDoService = Provider.of(context);
     return Dismissible(
       confirmDismiss: (direction) async {
-        if(direction == DismissDirection.endToStart) {
+        if (direction == DismissDirection.endToStart) {
           return await showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -21,11 +23,7 @@ class TodoListItem extends StatelessWidget {
                 title: const Text("Confirm"),
                 content: const Text("Are you sure you wish to delete this item?"),
                 actions: [
-                  FlatButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      textColor: Colors.red,
-                      child: const Text("DELETE")
-                  ),
+                  FlatButton(onPressed: () => Navigator.of(context).pop(true), textColor: Colors.red, child: const Text("DELETE")),
                   FlatButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const Text("CANCEL"),
@@ -42,13 +40,11 @@ class TodoListItem extends StatelessWidget {
       secondaryBackground: Container(color: Colors.red),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        if(direction == DismissDirection.startToEnd) {
+        if (direction == DismissDirection.startToEnd) {
           this.todo.isCompleted = true;
-        }
-        else if(direction == DismissDirection.endToStart) {
+        } else if (direction == DismissDirection.endToStart) {
           toDoService.removeTodo(this.todo);
         }
-
       },
       child: Observer(
         builder: (_) => CheckboxListTile(
@@ -57,7 +53,14 @@ class TodoListItem extends StatelessWidget {
           value: todo.isCompleted,
           title: Text(todo.name),
           subtitle: Text(todo.description),
-
+          secondary: Column(
+            children: [
+              Text(
+                DateFormat('kk:mm').format(todo.date),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
           onChanged: (newValue) {
             todo.isCompleted = newValue;
           },

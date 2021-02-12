@@ -1,6 +1,7 @@
 import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:Habitect/main_page.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +22,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       vsync: this,
       duration: Duration(milliseconds: 500),
     );
-    _animation =
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOutExpo).drive(Tween<double>(begin: 0, end: 250))
-          ..addListener(() {
-            setState(() {
-              // Mark the frame dirty for redraw
-            });
-          });
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOutExpo).drive(Tween<double>(begin: 0, end: 250))
+      ..addListener(() {
+        setState(() {
+          // Mark the frame dirty for redraw
+        });
+      });
     _controller.forward();
   }
 
@@ -51,9 +51,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               Container(
                 height: _animation.value,
                 width: _animation.value,
-                child: ClipRRect(
-                    child: Image.asset('graphics/sloth.png', height: 250, width: 250),
-                    borderRadius: BorderRadius.circular(200.0)),
+                child: ClipRRect(child: Image.asset('graphics/sloth.png', height: 250, width: 250), borderRadius: BorderRadius.circular(200.0)),
               ),
               SizedBox(height: 80),
               SignInButton(
@@ -70,13 +68,38 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   }
                 },
               ),
-              FlatButton(onPressed: () async {
-                await googleAccountService.logout();
-              }, child: Text("Disconect"))
+              FlatButton(
+                  onPressed: () async {
+                    await googleAccountService.logout();
+                  },
+                  child: Text("Disconect")),
+              FlatButton(
+                  onPressed: () async {
+                    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+                    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+                    final InitializationSettings initializationSettings = InitializationSettings(
+                      android: initializationSettingsAndroid,
+                    );
+                    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
+
+                    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+                        'your channel id', 'your channel name', 'your channel description',
+                        importance: Importance.max, priority: Priority.high, showWhen: false);
+                    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+                    await flutterLocalNotificationsPlugin.show(0, 'plain title', 'plain body', platformChannelSpecifics, payload: 'item x');
+                  },
+                  child: Text("Notify"))
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+Future selectNotification(String payload) async {
+  if (payload != null) {
+    debugPrint('notification payload: $payload');
   }
 }

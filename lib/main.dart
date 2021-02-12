@@ -3,9 +3,10 @@ import 'package:Habitect/services/to_do_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Habitect/login_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   runApp(HabitsApp());
 }
 
