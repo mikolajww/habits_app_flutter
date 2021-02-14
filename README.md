@@ -1,5 +1,8 @@
 # habits_app_flutter
 
+run MobX codegen with:  flutter packages pub run build_runner build
+
+
 A new Flutter application.
 
 ## Getting Started

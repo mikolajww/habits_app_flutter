@@ -1,7 +1,7 @@
 import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
-import 'package:Habitect/widgets/add_todo_popup.dart';
+import 'package:Habitect/widgets/add_todo_dialog.dart';
 import 'package:Habitect/widgets/home_top_bar.dart';
 import 'package:Habitect/widgets/pie_chart.dart';
 import 'package:Habitect/widgets/todo_list_item.dart';

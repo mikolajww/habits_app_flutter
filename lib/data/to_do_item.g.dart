@@ -69,13 +69,29 @@ mixin _$ToDoItem on _ToDoItem, Store {
     });
   }
 
+  final _$categoryAtom = Atom(name: '_ToDoItem.category');
+
+  @override
+  ToDoCategory get category {
+    _$categoryAtom.reportRead();
+    return super.category;
+  }
+
+  @override
+  set category(ToDoCategory value) {
+    _$categoryAtom.reportWrite(value, super.category, () {
+      super.category = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 name: ${name},
 description: ${description},
 date: ${date},
-isCompleted: ${isCompleted}
+isCompleted: ${isCompleted},
+category: ${category}
     ''';
   }
 }
