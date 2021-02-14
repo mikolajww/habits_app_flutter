@@ -1,3 +1,4 @@
+import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/widgets/todo_list_item.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,46 @@ class _CalendarPageState extends State<CalendarPage> {
           selectedEvents = events;
         });
       },
+      builders: CalendarBuilders(
+        markersBuilder: (context, date, events, holidays) {
+          print("Events $events");
+          final children = <Widget>[];
+
+          if (events.isNotEmpty) {
+            children.add(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _buildEventsMarker(date, events),
+              ),
+            );
+          }
+          return children;
+        },
+      ),
     );
+  }
+
+  List<Widget> _buildEventsMarker(DateTime date, List events) {
+    var children = <Widget>[];
+    for (ToDoItem event in events) {
+      if (children.length == 4) {
+        break;
+      }
+      if (!event.isCompleted) {
+        children.add(Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(color: event.category.color, borderRadius: BorderRadius.circular(20)),
+        ));
+      }
+    }
+    if (events.where((element) => !(element as ToDoItem).isCompleted).length > 4) {
+      children.add(Text(
+        "...",
+        style: TextStyle(fontSize: 12),
+      ));
+    }
+    return children;
   }
 
   Widget _buildEventList() {
