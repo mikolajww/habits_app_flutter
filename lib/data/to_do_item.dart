@@ -24,9 +24,12 @@ abstract class _ToDoItem with Store {
   bool doNotify;
   DateTime notificationDate;
 
+  String recordingPath;
+
   _ToDoItem(this.name, this.description, this.isCompleted, this.date, this.category,
-      {bool doNotify, DateTime notificationDate}) {
+      {bool doNotify, DateTime notificationDate, String recordingPath}) {
     this.doNotify = doNotify ?? false;
     this.notificationDate = notificationDate;
+    this.recordingPath = recordingPath;
   }
 }

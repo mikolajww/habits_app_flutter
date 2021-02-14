@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
   final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(currentTimeZone));
+  tz.setLocalLocation(tz.getLocation("Europe/Warsaw"));
   runApp(HabitsApp());
   Notifications.init();
 }

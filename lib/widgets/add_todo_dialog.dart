@@ -7,6 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+
+import 'file:///E:/FlutterProjects/habits_app_flutter/lib/widgets/voice_recorder.dart';
 
 class AddTodoDialog extends StatefulWidget {
   AddTodoDialog({Key key}) : super(key: key);
@@ -22,17 +25,19 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
   ToDoCategory selectedCategory = ToDoService.categories[0];
   bool doNotify = false;
   DateTime notificationDate = DateTime.now();
+  final uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
     final ToDoService toDoService = Provider.of(context);
+    final randomId = uuid.v4();
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       backgroundColor: Color(0xff2e2e2e),
       child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         child: Container(
-          height: doNotify ? 600 : 500,
+          height: doNotify ? 590 : 540,
           padding: EdgeInsets.fromLTRB(32, 20, 32, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -76,6 +81,9 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                   },
                   selectedDate: notificationDate,
                 ),
+              VoiceRecorder(
+                recordingName: randomId + ".aac",
+              ),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +97,7 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                     color: Colors.green,
                     onPressed: () async {
                       await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
-                          doNotify: doNotify, notificationDate: notificationDate));
+                          doNotify: doNotify, notificationDate: notificationDate, recordingPath: randomId + ".aac"));
                       Navigator.of(context).pop(true);
                     },
                     child: const Text("ADD"),
