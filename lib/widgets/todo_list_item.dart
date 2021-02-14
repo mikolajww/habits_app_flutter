@@ -24,10 +24,7 @@ class TodoListItem extends StatelessWidget {
                 title: const Text("Confirm"),
                 content: const Text("Are you sure you wish to delete this item?"),
                 actions: [
-                  FlatButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      textColor: Colors.red,
-                      child: const Text("DELETE")),
+                  FlatButton(onPressed: () => Navigator.of(context).pop(true), textColor: Colors.red, child: const Text("DELETE")),
                   FlatButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const Text("CANCEL"),
@@ -83,28 +80,39 @@ class TodoListItem extends StatelessWidget {
                   ),
                 ),
                 //Title + description
-                SizedBox(
-                  width: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                        child: Text(
-                          todo.name,
-                          style: TextStyle(fontSize: 20),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Task Description"),
+                          content: Text(description),
+                        );
+                      },
+                    );
+                  },
+                  child: SizedBox(
+                    width: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                          child: Text(
+                            todo.name,
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          descriptionLines.length > 2
-                              ? descriptionLines.sublist(0, 2).join("\n") + "..."
-                              : descriptionLines.join("\n"),
-                          maxLines: 2,
-                        ),
-                      )
-                    ],
+                        Flexible(
+                          child: Text(
+                            descriptionLines.length > 2 ? descriptionLines.sublist(0, 2).join("\n") + "..." : descriptionLines.join("\n"),
+                            maxLines: 2,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Checkbox(value: todo.isCompleted, onChanged: (newVal) => todo.isCompleted = newVal),
