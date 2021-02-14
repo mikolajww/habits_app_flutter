@@ -1,9 +1,8 @@
 import 'package:Habitect/calendar_page.dart';
 import 'package:Habitect/home_page.dart';
+import 'package:Habitect/widgets/voice_recorder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'file:///E:/FlutterProjects/habits_app_flutter/lib/widgets/voice_recorder.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, this.title}) : super(key: key);

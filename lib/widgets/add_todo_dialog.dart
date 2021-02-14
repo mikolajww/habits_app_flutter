@@ -2,14 +2,13 @@ import 'package:Habitect/data/to_do_category.dart';
 import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
+import 'package:Habitect/widgets/voice_recorder.dart';
 import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-import 'file:///E:/FlutterProjects/habits_app_flutter/lib/widgets/voice_recorder.dart';
 
 class AddTodoDialog extends StatefulWidget {
   AddTodoDialog({Key key}) : super(key: key);
@@ -37,7 +36,7 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
       child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         child: Container(
-          height: doNotify ? 590 : 540,
+          height: doNotify ? 610 : 560,
           padding: EdgeInsets.fromLTRB(32, 20, 32, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,

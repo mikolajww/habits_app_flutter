@@ -12,27 +12,8 @@ class VoiceRecorder extends StatefulWidget {
 }
 
 class _VoiceRecorderState extends State<VoiceRecorder> {
-  FlutterSoundRecorder _Recorder = FlutterSoundRecorder();
-  bool _RecorderIsInited = false;
+  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
-  final String _mPath = 'flutter_sound_example.aac';
-
-  @override
-  void initState() {
-    openRecorder().then((value) {
-      setState(() {
-        _RecorderIsInited = true;
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _Recorder.closeAudioSession();
-    _Recorder = null;
-    super.dispose();
-  }
 
   Future<void> openRecorder() async {
     if (!kIsWeb) {
@@ -41,52 +22,45 @@ class _VoiceRecorderState extends State<VoiceRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _Recorder.openAudioSession();
-    _RecorderIsInited = true;
+    await _recorder.openAudioSession();
   }
 
-  // ----------------------  Here is the code for recording and playback -------
-
   record() async {
-    _Recorder.startRecorder(
+    _recorder.startRecorder(
       toFile: widget.recordingName,
-    ).then((value) {
-      setState(() {
-        _isRecording = true;
-      });
-    });
+    );
   }
 
   stopRecorder() async {
-    await _Recorder.stopRecorder().then((value) {
-      setState(() {
-        _isRecording = false;
-      });
-    });
+    await _recorder.stopRecorder();
   }
 
-// ----------------------------- UI --------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: IconButton(
-        icon: Icon(
-          Icons.mic,
-          color: _isRecording ? Colors.red : null,
-        ),
-        onPressed: () async {
-          setState(() {
-            _isRecording = !_isRecording;
-          });
-          if (!_isRecording) {
-            print("recording");
-            await record();
-          } else {
-            print("stopping recording");
-            await stopRecorder();
-          }
-        },
+      child: Column(
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.mic,
+              color: _isRecording ? Colors.red : null,
+            ),
+            onPressed: () async {
+              setState(() {
+                _isRecording = !_isRecording;
+              });
+              if (_isRecording) {
+                await openRecorder();
+                await record();
+              } else {
+                await stopRecorder();
+                await _recorder.closeAudioSession();
+              }
+            },
+          ),
+          Text(_isRecording ? "Recording..." : "Tap to record")
+        ],
       ),
     );
   }
