@@ -115,7 +115,11 @@ class TodoListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Checkbox(value: todo.isCompleted, onChanged: (newVal) => todo.isCompleted = newVal),
+                Checkbox(
+                  value: todo.isCompleted,
+                  onChanged: (newVal) => todo.isCompleted = newVal,
+                  activeColor: Colors.green,
+                ),
               ],
             ),
           ),
