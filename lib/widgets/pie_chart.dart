@@ -21,7 +21,6 @@ class PieChart extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
-            //boxShadow: [BoxShadow(color: Col, blurRadius: 10, ),]
           ),
         ),
         SizedBox(

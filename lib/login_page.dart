@@ -1,8 +1,7 @@
 import 'package:Habitect/services/google_account_service.dart';
-import 'package:Habitect/services/notification_plugin.dart';
+import 'package:Habitect/services/notifications.dart';
 import 'package:Habitect/styles/app_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:Habitect/main_page.dart';
 import 'package:provider/provider.dart';
@@ -76,13 +75,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   child: Text("Disconect")),
               FlatButton(
                   onPressed: () async {
-                    var plugin = NotificationPlugin.plugin;
-                    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-                        'your channel id', 'your channel name', 'your channel description',
-                        sound: RawResourceAndroidNotificationSound("slow_spring_board"),
-                        importance: Importance.max, priority: Priority.high, showWhen: false);
-                    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-                    await plugin.show(0, 'Workout', 'time for the gainz', platformChannelSpecifics, payload: 'item x');
+                    Notifications.sendNotification("Workout", "Keep up the streak!");
                   },
                   child: Text("Notify"))
             ],
