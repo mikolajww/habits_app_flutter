@@ -1,6 +1,5 @@
 import 'package:Habitect/main_page.dart';
 import 'package:Habitect/services/google_account_service.dart';
-import 'package:Habitect/services/notifications.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
 import 'package:flutter/material.dart';
