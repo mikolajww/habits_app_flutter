@@ -1,6 +1,7 @@
 import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/to_do_service.dart';
+import 'package:Habitect/widgets/todo_details_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -91,10 +92,7 @@ class TodoListItem extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Task Description"),
-                          content: Text(description),
-                        );
+                        return TodoDetailsDialog(todo: todo);
                       },
                     );
                   },

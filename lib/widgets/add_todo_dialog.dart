@@ -26,13 +26,19 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
   bool doNotify = false;
   DateTime notificationDate = DateTime.now();
   final uuid = Uuid();
+  var randomId;
   bool recordingPressed = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    randomId = uuid.v4();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ToDoService toDoService = Provider.of(context);
-    final randomId = uuid.v4();
+
     final GoogleAccountService googleAccountService = Provider.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -106,7 +112,9 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
-                              doNotify: doNotify, notificationDate: notificationDate, recordingPath: recordingPressed ? randomId + ".aac" : null));
+                              doNotify: doNotify,
+                              notificationDate: notificationDate,
+                              recordingPath: recordingPressed ? randomId + ".aac" : null));
                           await googleAccountService.updateFile(toDoService.todos);
                           Navigator.of(context).pop(true);
                         }
