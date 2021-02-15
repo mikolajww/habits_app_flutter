@@ -1,4 +1,5 @@
 import 'package:Habitect/data/to_do_item.dart';
+import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class TodoListItem extends StatelessWidget {
     final description = todo.description;
     var descriptionLines = description.split('\n');
     final ToDoService toDoService = Provider.of(context);
+    final GoogleAccountService googleAccountService = Provider.of(context);
     return Dismissible(
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
@@ -24,7 +26,10 @@ class TodoListItem extends StatelessWidget {
                 title: const Text("Confirm"),
                 content: const Text("Are you sure you wish to delete this item?"),
                 actions: [
-                  FlatButton(onPressed: () => Navigator.of(context).pop(true), textColor: Colors.red, child: const Text("DELETE")),
+                  FlatButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      textColor: Colors.red,
+                      child: const Text("DELETE")),
                   FlatButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const Text("CANCEL"),
@@ -40,11 +45,12 @@ class TodoListItem extends StatelessWidget {
       background: Container(),
       secondaryBackground: Container(color: Colors.red),
       direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
+      onDismissed: (direction) async {
         if (direction == DismissDirection.startToEnd) {
           this.todo.isCompleted = true;
         } else if (direction == DismissDirection.endToStart) {
           toDoService.removeTodo(this.todo);
+          await googleAccountService.updateFile(toDoService.todos);
         }
       },
       child: Observer(builder: (_) {
@@ -107,7 +113,9 @@ class TodoListItem extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            descriptionLines.length > 2 ? descriptionLines.sublist(0, 2).join("\n") + "..." : descriptionLines.join("\n"),
+                            descriptionLines.length > 2
+                                ? descriptionLines.sublist(0, 2).join("\n") + "..."
+                                : descriptionLines.join("\n"),
                             maxLines: 2,
                           ),
                         )

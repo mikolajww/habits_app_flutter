@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<HomePage> {
   bool isTopBarExpanded = true;
   bool bottomSheetExpanded = false;
+  bool fetchedFromDrive = false;
 
   @override
   Widget build(BuildContext context) {

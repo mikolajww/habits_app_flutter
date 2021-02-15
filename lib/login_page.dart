@@ -1,9 +1,10 @@
+import 'package:Habitect/main_page.dart';
 import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/notifications.dart';
+import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:Habitect/main_page.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,12 +23,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       vsync: this,
       duration: Duration(milliseconds: 500),
     );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOutExpo).drive(Tween<double>(begin: 0, end: 250))
-      ..addListener(() {
-        setState(() {
-          // Mark the frame dirty for redraw
-        });
-      });
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOutExpo).drive(Tween<double>(begin: 0, end: 250))
+          ..addListener(() {
+            setState(() {
+              // Mark the frame dirty for redraw
+            });
+          });
     _controller.forward();
   }
 
@@ -40,6 +42,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     GoogleAccountService googleAccountService = Provider.of(context);
+    ToDoService toDoService = Provider.of(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -51,7 +54,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               Container(
                 height: _animation.value,
                 width: _animation.value,
-                child: ClipRRect(child: Image.asset('graphics/sloth.png', height: 250, width: 250), borderRadius: BorderRadius.circular(200.0)),
+                child: ClipRRect(
+                    child: Image.asset('graphics/sloth.png', height: 250, width: 250),
+                    borderRadius: BorderRadius.circular(200.0)),
               ),
               SizedBox(height: 80),
               SignInButton(
@@ -59,6 +64,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 onPressed: () async {
                   try {
                     await googleAccountService.login();
+                    await toDoService.fetchTodos();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),

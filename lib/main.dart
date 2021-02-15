@@ -27,7 +27,12 @@ class HabitsApp extends StatelessWidget {
       systemNavigationBarColor: ThemeData.dark().canvasColor,
     ));
     return MultiProvider(
-      providers: [Provider(create: (_) => GoogleAccountService()), Provider(create: (_) => ToDoService())],
+      providers: [
+        Provider(create: (_) => GoogleAccountService()),
+        ProxyProvider<GoogleAccountService, ToDoService>(
+          update: (_, gAccServ, __) => ToDoService(gAccServ),
+        )
+      ],
       child: MaterialApp(
         title: 'Habitect',
         theme: ThemeData.dark(),

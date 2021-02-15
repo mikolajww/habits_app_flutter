@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:Habitect/data/to_do_category.dart';
 import 'package:Habitect/data/to_do_item.dart';
+import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -16,6 +17,8 @@ class ToDoService extends _ToDoService with _$ToDoService {
     ToDoCategory("Medical", Colors.amber),
     ToDoCategory("Leisure", Colors.deepPurpleAccent)
   ];
+
+  ToDoService(GoogleAccountService googleAccountService) : super(googleAccountService);
 }
 
 bool isTheSameDay(DateTime first, DateTime other) {
@@ -23,6 +26,9 @@ bool isTheSameDay(DateTime first, DateTime other) {
 }
 
 abstract class _ToDoService with Store {
+  final GoogleAccountService googleAccountService;
+  _ToDoService(this.googleAccountService) {}
+
   @computed
   ObservableList<ToDoItem> get completedTodayTodos =>
       ObservableList.of(todayTodos.where((todo) => todo.isCompleted == true));
@@ -57,6 +63,12 @@ abstract class _ToDoService with Store {
     if (toDoItem.doNotify) {
       await Notifications.scheduleNotification(toDoItem.name, toDoItem.description, toDoItem.notificationDate);
     }
+  }
+
+  @action
+  Future<void> fetchTodos() async {
+    var tasks = await googleAccountService.getTasksFromDrive();
+    todos = ObservableList.of(tasks);
   }
 
   @action

@@ -59,6 +59,22 @@ abstract class _GoogleAccountService with Store {
     return auth.accessToken;
   }
 
+  Future<List<ToDoItem>> getTasksFromDrive() async {
+    const Map<String, String> queryParams = {'key': apiKey, 'alt': 'media'};
+    var token = await getToken();
+    var uri = Uri.https(gapisAuthority, gapisGDrivePath + "/$habitectFileId", queryParams);
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{'Authorization': 'Bearer $token', 'Accept': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      List<dynamic> responseBody = jsonDecode(response.body);
+      return responseBody.map((e) => ToDoItem.fromJson(e)).toList();
+    } else {
+      throw Exception('$uri returned ${response.statusCode}');
+    }
+  }
+
   Future<String> getHabitectFileId() async {
     const Map<String, String> queryParams = {'key': apiKey};
     var token = await getToken();
@@ -108,7 +124,6 @@ abstract class _GoogleAccountService with Store {
     var token = await getToken();
     var uri = Uri.https(gapisAuthority, gapisGDriveUploadPath + "/$habitectFileId", queryParams);
     var multipartBody = createMultipartBody(habitectFileName, todos, false);
-    print(multipartBody);
     final http.Response response = await http.patch(
       uri,
       body: multipartBody,
@@ -119,7 +134,6 @@ abstract class _GoogleAccountService with Store {
         'Content-Length': multipartBody.length.toString()
       },
     );
-    print(response.body);
     if (response.statusCode == 200) {
       Map<String, dynamic> responseBody = jsonDecode(response.body);
       return responseBody['id'];
@@ -186,7 +200,6 @@ abstract class _GoogleAccountService with Store {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseBody = jsonDecode(response.body);
       for (var file in responseBody['files']) {
-        print(file);
         if (file['name'].toString() == folderName) {
           return file['id'];
         }
