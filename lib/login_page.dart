@@ -80,10 +80,52 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   },
                   child: Text("Disconect")),
               FlatButton(
-                  onPressed: () async {
-                    Notifications.sendNotification("Workout", "Keep up the streak!");
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: Center(
+                                child: const Text(
+                              "About Habitect",
+                              style: TextStyle(fontSize: 20),
+                            )),
+                            content: RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 16),
+                                children: [
+                                  WidgetSpan(
+                                    child: Icon(Icons.assignment_outlined, size: 20),
+                                  ),
+                                  TextSpan(
+                                    text: " Keep track of your daily tasks. \n\n",
+                                  ),
+                                  WidgetSpan(
+                                    child: Icon(Icons.mic, size: 20),
+                                  ),
+                                  TextSpan(
+                                    text: " Record voice notes. \n\n",
+                                  ),
+                                  WidgetSpan(
+                                    child: Icon(Icons.date_range, size: 20),
+                                  ),
+                                  TextSpan(
+                                    text: " Access it all in a built-in calendar. \n\n",
+                                  ),
+                                  WidgetSpan(
+                                    child: Icon(Icons.add_to_drive, size: 20),
+                                  ),
+                                  TextSpan(
+                                    text: " Synchronize with Google Drive. \n\n",
+                                  ),
+                                ],
+                              ),
+                            ));
+                      },
+                    );
+                    //Notifications.sendNotification("Workout", "Keep up the streak!");
                   },
-                  child: Text("Notify"))
+                  child: Text("About"))
             ],
           ),
         ),

@@ -27,6 +27,7 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
   DateTime notificationDate = DateTime.now();
   final uuid = Uuid();
   bool recordingPressed = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,80 +39,84 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
       backgroundColor: Color(0xff2e2e2e),
       child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        child: Container(
-          height: doNotify ? 610 : 560,
-          padding: EdgeInsets.fromLTRB(32, 20, 32, 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Add a new item",
-                style: AppStyles.MED_ROBOTO,
-              ),
-              SizedBox(height: 32),
-              _buildTextField(),
-              SizedBox(height: 16),
-              _buildDescriptionField(),
-              SizedBox(height: 16),
-              DateTimeField(
-                dateTextStyle: TextStyle(fontSize: 18),
-                dateFormat: DateFormat("d/MM/y HH:mm"),
-                onDateSelected: (date) {
-                  setState(() {
-                    selectedDate = date;
-                  });
-                },
-                selectedDate: selectedDate,
-              ),
-              SizedBox(height: 16),
-              _buildCategorySelector(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Set notification"),
-                  Checkbox(value: doNotify, onChanged: (newVal) => setState(() => doNotify = newVal)),
-                ],
-              ),
-              if (doNotify)
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.always,
+          child: Container(
+            height: doNotify ? 630 : 590,
+            padding: EdgeInsets.fromLTRB(32, 20, 32, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Add a new item",
+                  style: AppStyles.MED_ROBOTO,
+                ),
+                SizedBox(height: 32),
+                _buildTextField(),
+                SizedBox(height: 16),
+                _buildDescriptionField(),
+                SizedBox(height: 16),
                 DateTimeField(
                   dateTextStyle: TextStyle(fontSize: 18),
                   dateFormat: DateFormat("d/MM/y HH:mm"),
                   onDateSelected: (date) {
                     setState(() {
-                      notificationDate = date;
+                      selectedDate = date;
                     });
                   },
-                  selectedDate: notificationDate,
+                  selectedDate: selectedDate,
                 ),
-              VoiceRecorder(
-                  recordingName: randomId + ".aac",
-                  f: () => setState(() {
-                        recordingPressed = true;
-                      })),
-              Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RaisedButton(
-                    color: Colors.red,
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text("CANCEL"),
-                  ),
-                  RaisedButton(
-                    color: Colors.green,
-                    onPressed: () async {
-                      await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
-                          doNotify: doNotify,
-                          notificationDate: notificationDate,
-                          recordingPath: recordingPressed ? randomId + ".aac" : null));
-                      await googleAccountService.updateFile(toDoService.todos);
-                      Navigator.of(context).pop(true);
+                SizedBox(height: 16),
+                _buildCategorySelector(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Set notification"),
+                    Checkbox(value: doNotify, onChanged: (newVal) => setState(() => doNotify = newVal)),
+                  ],
+                ),
+                if (doNotify)
+                  DateTimeField(
+                    dateTextStyle: TextStyle(fontSize: 18),
+                    dateFormat: DateFormat("d/MM/y HH:mm"),
+                    onDateSelected: (date) {
+                      setState(() {
+                        notificationDate = date;
+                      });
                     },
-                    child: const Text("ADD"),
+                    selectedDate: notificationDate,
                   ),
-                ],
-              )
-            ],
+                VoiceRecorder(
+                    recordingName: randomId + ".aac",
+                    f: () => setState(() {
+                          recordingPressed = true;
+                        })),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RaisedButton(
+                      color: Colors.red,
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text("CANCEL"),
+                    ),
+                    RaisedButton(
+                      color: Colors.green,
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
+                              doNotify: doNotify, notificationDate: notificationDate, recordingPath: recordingPressed ? randomId + ".aac" : null));
+                          await googleAccountService.updateFile(toDoService.todos);
+                          Navigator.of(context).pop(true);
+                        }
+                      },
+                      child: const Text("ADD"),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -187,7 +192,13 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
   }
 
   Widget _buildTextField() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Please name your task";
+        }
+        return null;
+      },
       decoration: InputDecoration(
         hintText: "Task name",
         border: OutlineInputBorder(),
