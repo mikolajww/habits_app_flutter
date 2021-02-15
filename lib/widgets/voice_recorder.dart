@@ -4,8 +4,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class VoiceRecorder extends StatefulWidget {
-  VoiceRecorder({Key key, @required this.recordingName}) : super(key: key);
+  VoiceRecorder({Key key, @required this.recordingName, this.f}) : super(key: key);
   final String recordingName;
+  final Function f;
 
   @override
   _VoiceRecorderState createState() => _VoiceRecorderState();
@@ -47,6 +48,7 @@ class _VoiceRecorderState extends State<VoiceRecorder> {
               color: _isRecording ? Colors.red : null,
             ),
             onPressed: () async {
+              widget.f();
               setState(() {
                 _isRecording = !_isRecording;
               });

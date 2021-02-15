@@ -1,5 +1,6 @@
 import 'package:Habitect/data/to_do_category.dart';
 import 'package:Habitect/data/to_do_item.dart';
+import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
 import 'package:Habitect/widgets/voice_recorder.dart';
@@ -25,11 +26,13 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
   bool doNotify = false;
   DateTime notificationDate = DateTime.now();
   final uuid = Uuid();
+  bool recordingPressed = false;
 
   @override
   Widget build(BuildContext context) {
     final ToDoService toDoService = Provider.of(context);
     final randomId = uuid.v4();
+    final GoogleAccountService googleAccountService = Provider.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       backgroundColor: Color(0xff2e2e2e),
@@ -81,8 +84,10 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                   selectedDate: notificationDate,
                 ),
               VoiceRecorder(
-                recordingName: randomId + ".aac",
-              ),
+                  recordingName: randomId + ".aac",
+                  f: () => setState(() {
+                        recordingPressed = true;
+                      })),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +101,10 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                     color: Colors.green,
                     onPressed: () async {
                       await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
-                          doNotify: doNotify, notificationDate: notificationDate, recordingPath: randomId + ".aac"));
+                          doNotify: doNotify,
+                          notificationDate: notificationDate,
+                          recordingPath: recordingPressed ? randomId + ".aac" : null));
+                      await googleAccountService.updateFile(toDoService.todos);
                       Navigator.of(context).pop(true);
                     },
                     child: const Text("ADD"),

@@ -60,7 +60,6 @@ class _CalendarPageState extends State<CalendarPage> {
       },
       builders: CalendarBuilders(
         markersBuilder: (context, date, events, holidays) {
-          print("Events $events");
           final children = <Widget>[];
 
           if (events.isNotEmpty) {

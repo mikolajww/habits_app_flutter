@@ -32,4 +32,25 @@ abstract class _ToDoItem with Store {
     this.notificationDate = notificationDate;
     this.recordingPath = recordingPath;
   }
+
+  _ToDoItem.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        description = json['description'],
+        date = DateTime.parse(json['date']),
+        isCompleted = json['isCompleted'],
+        category = ToDoCategory.fromJson(json['category']),
+        doNotify = json['doNotify'],
+        notificationDate = DateTime.parse(json['notificationDate']),
+        recordingPath = json['recordingPath'];
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'description': description,
+        'date': date.toIso8601String(),
+        'isCompleted': isCompleted,
+        'category': category.toJson(),
+        'doNotify': doNotify,
+        'notificationDate': notificationDate.toIso8601String(),
+        'recordingPath': recordingPath
+      };
 }

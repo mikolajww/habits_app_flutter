@@ -41,6 +41,7 @@ dependencies:
   flutter_sound: ^7.6.5+1
   permission_handler: ^5.1.0+2
   uuid: 2.2.2
+  dio: ^3.0.10
 
 dev_dependencies:
   build_runner: ^1.11.1

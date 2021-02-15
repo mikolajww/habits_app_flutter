@@ -44,7 +44,6 @@ abstract class _ToDoService with Store {
       }
       m[key].add(element);
     });
-    print(m);
     return ObservableMap.of(m);
   }
 
