@@ -1,6 +1,6 @@
 import 'package:Habitect/calendar_page.dart';
 import 'package:Habitect/home_page.dart';
-import 'package:Habitect/widgets/voice_recorder.dart';
+import 'package:Habitect/statistics_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
           controller: pageController,
           children: [
             HomePage(),
-            VoiceRecorder(),
+            StatisticsPage(),
             CalendarPage(),
           ],
         ),
