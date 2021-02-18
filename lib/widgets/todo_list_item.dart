@@ -14,7 +14,10 @@ class TodoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final description = todo.description;
-    var descriptionLines = description.split('\n');
+    var descriptionLines;
+    if (description != null) {
+      descriptionLines = description.split('\n');
+    }
     final ToDoService toDoService = Provider.of(context);
     final GoogleAccountService googleAccountService = Provider.of(context);
     return Dismissible(
@@ -97,30 +100,52 @@ class TodoListItem extends StatelessWidget {
                     );
                   },
                   child: SizedBox(
-                    width: 200,
+                    width: 150,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                          child: Text(
-                            todo.name,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                            child: RichText(
+                              text: TextSpan(style: TextStyle(fontSize: 20), children: [
+                                TextSpan(
+                                  text: todo.name + "  ",
+                                ),
+                                if (todo.recordingPath != null)
+                                  WidgetSpan(
+                                    child: Icon(Icons.headset, size: 20),
+                                  ),
+                              ]),
+                            )),
                         Flexible(
-                          child: Text(
-                            descriptionLines.length > 2
-                                ? descriptionLines.sublist(0, 2).join("\n") + "..."
-                                : descriptionLines.join("\n"),
-                            maxLines: 2,
-                          ),
-                        )
+                          child: description != null
+                              ? Text(
+                                  descriptionLines.length > 2
+                                      ? descriptionLines.sublist(0, 2).join("\n") + "..."
+                                      : descriptionLines.join("\n"),
+                                  maxLines: 2,
+                                )
+                              : Container(height: 0, width: 0),
+                        ),
                       ],
                     ),
                   ),
                 ),
+                SizedBox(
+                    width: 50,
+                    child: todo.doNotify
+                        ? RichText(
+                            text: TextSpan(style: TextStyle(fontSize: 12), children: [
+                              WidgetSpan(
+                                child: Icon(Icons.alarm, size: 20),
+                              ),
+                              TextSpan(
+                                text: DateFormat('kk:mm').format(todo.notificationDate),
+                              ),
+                            ]),
+                          )
+                        : null),
                 Checkbox(
                   value: todo.isCompleted,
                   onChanged: (newVal) => todo.isCompleted = newVal,
@@ -134,24 +159,3 @@ class TodoListItem extends StatelessWidget {
     );
   }
 }
-
-/*
-* CheckboxListTile(
-          tileColor: Color(0xff2e2e2e),
-          activeColor: Colors.green,
-          value: todo.isCompleted,
-          title: Text(todo.name),
-          subtitle: Text(todo.description),
-          secondary: Column(
-            children: [
-              Text(
-                DateFormat('kk:mm').format(todo.date),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-          onChanged: (newValue) {
-            todo.isCompleted = newValue;
-          },
-        ),
-* */

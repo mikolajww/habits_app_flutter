@@ -111,12 +111,12 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                       color: Colors.green,
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
+                          Navigator.of(context).pop(true);
                           await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
                               doNotify: doNotify,
                               notificationDate: notificationDate,
                               recordingPath: recordingPressed ? randomId + ".aac" : null));
                           await googleAccountService.updateFile(toDoService.todos);
-                          Navigator.of(context).pop(true);
                         }
                       },
                       child: const Text("ADD"),
