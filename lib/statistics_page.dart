@@ -30,6 +30,7 @@ class _StatisticsPageState extends State<StatisticsPage> with SingleTickerProvid
         children: [
           Container(
             child: TabBar(
+              indicatorColor: Colors.green,
               controller: _tabController,
               tabs: [
                 Tab(text: "Daily"),
@@ -58,10 +59,8 @@ class _StatisticsPageState extends State<StatisticsPage> with SingleTickerProvid
 charts.Series<TimeSeriesTodo, DateTime> getWeeklyStatistics(DateTime fromDate, DateTime toDate, BuildContext context) {
   final ToDoService toDoService = Provider.of(context);
 
-  final weeklyTodos = toDoService.todos
-      .where((element) => element.date.isBefore(toDate) && element.date.isAfter(fromDate))
-      .toList()
-        ..sort((ToDoItem a, ToDoItem b) => a.date.compareTo(b.date));
+  final weeklyTodos = toDoService.todos.where((element) => element.date.isBefore(toDate) && element.date.isAfter(fromDate)).toList()
+    ..sort((ToDoItem a, ToDoItem b) => a.date.compareTo(b.date));
 
   final daysToGenerate = toDate.difference(fromDate).inDays + 1;
   var days = List.generate(daysToGenerate, (i) => DateTime(fromDate.year, fromDate.month, fromDate.day + (i)));

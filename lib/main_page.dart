@@ -39,8 +39,8 @@ class _MainPageState extends State<MainPage> {
           controller: pageController,
           children: [
             HomePage(),
-            StatisticsPage(),
             CalendarPage(),
+            StatisticsPage(),
           ],
         ),
       ),
@@ -51,12 +51,12 @@ class _MainPageState extends State<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wysiwyg_sharp),
-            label: 'To-Do',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.show_chart),
+            label: 'Stats',
           ),
         ],
         currentIndex: _currentMenuTab,

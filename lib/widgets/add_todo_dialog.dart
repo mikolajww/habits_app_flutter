@@ -79,7 +79,7 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Set notification"),
-                    Checkbox(value: doNotify, onChanged: (newVal) => setState(() => doNotify = newVal)),
+                    Checkbox(activeColor: Colors.green, value: doNotify, onChanged: (newVal) => setState(() => doNotify = newVal)),
                   ],
                 ),
                 if (doNotify)
@@ -113,9 +113,7 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
                         if (_formKey.currentState.validate()) {
                           Navigator.of(context).pop(true);
                           await toDoService.addTodo(ToDoItem(title, description, false, selectedDate, selectedCategory,
-                              doNotify: doNotify,
-                              notificationDate: notificationDate,
-                              recordingPath: recordingPressed ? randomId + ".aac" : null));
+                              doNotify: doNotify, notificationDate: notificationDate, recordingPath: recordingPressed ? randomId + ".aac" : null));
                           await googleAccountService.updateFile(toDoService.todos);
                         }
                       },
