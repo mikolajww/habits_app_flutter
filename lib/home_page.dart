@@ -1,3 +1,4 @@
+import 'package:Habitect/data/to_do_item.dart';
 import 'package:Habitect/services/google_account_service.dart';
 import 'package:Habitect/services/to_do_service.dart';
 import 'package:Habitect/styles/app_styles.dart';
@@ -86,6 +87,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         )
       ];
     } else {
+      var todayTodos = toDoService.todayTodos..sort((ToDoItem a, ToDoItem b) => a.date.compareTo(b.date));
       return [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
@@ -131,9 +133,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                         );
                         return header;
                       }
-                      return TodoListItem(toDoService.todayTodos[index - 1]);
+                      return TodoListItem(todayTodos[index - 1]);
                     },
-                    itemCount: toDoService.todayTodos.length + 1, // +1 for the header
+                    itemCount: todayTodos.length + 1, // +1 for the header
                     controller: scrollableController,
                     separatorBuilder: (BuildContext context, int index) {
                       return index > 0 ? Divider(thickness: 1, indent: 5, endIndent: 5, height: 5) : Container();

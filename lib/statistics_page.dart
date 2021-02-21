@@ -23,36 +23,43 @@ class _StatisticsPageState extends State<StatisticsPage> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final ToDoService toDoService = Provider.of(context);
     return Container(
       height: 500,
       width: 500,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            child: TabBar(
-              indicatorColor: Colors.green,
-              controller: _tabController,
-              tabs: [
-                Tab(text: "Weekly"),
-                Tab(text: "Monthly"),
-                Tab(text: "Overall"),
-              ],
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-              physics: ClampingScrollPhysics(),
-              controller: _tabController,
+      child: toDoService.todos.length > 0
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                weeklyStatistics(context),
-                monthlyStatistics(context),
-                overallStatistics(context),
+                Container(
+                  child: TabBar(
+                    indicatorColor: Colors.green,
+                    controller: _tabController,
+                    tabs: [
+                      Tab(text: "Weekly"),
+                      Tab(text: "Monthly"),
+                      Tab(text: "Overall"),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    physics: ClampingScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      weeklyStatistics(context),
+                      monthlyStatistics(context),
+                      overallStatistics(context),
+                    ],
+                  ),
+                )
               ],
-            ),
-          )
-        ],
-      ),
+            )
+          : Center(
+              child: Text(
+              "Add some todos to see the statistics",
+              style: TextStyle(fontFamily: "Roboto", fontSize: 20),
+            )),
     );
   }
 }
@@ -190,42 +197,46 @@ Widget overallStatistics(BuildContext context) {
   var currentStreak = 0;
 
   final sortedTodos = toDoService.todos..sort((ToDoItem a, ToDoItem b) => a.date.compareTo(b.date));
-  final earliestTodo = sortedTodos.first.date;
-  final latestTodo = DateTime.now();
-
-  var days = List.generate(latestTodo.difference(earliestTodo).inDays + 1,
-      (i) => DateTime(earliestTodo.year, earliestTodo.month, earliestTodo.day + i));
-  var todoMap = toDoService.asEvents;
-  for (var day in days) {
-    print(day);
-    if (!todoMap.containsKey(day)) {
-      streak++;
-      continue;
-    }
-    var todoList = todoMap[day];
-    if (todoList.every((element) => element.isCompleted)) {
-      streak++;
-    } else {
-      if (streak > longestStreak) {
-        longestStreak = streak;
-        streak = 0;
+  var earliestTodo = sortedTodos.first.date;
+  var latestTodo = DateTime.now();
+  if (earliestTodo.isAfter(latestTodo)) {
+    earliestTodo = DateTime.now();
+    latestTodo = sortedTodos.first.date;
+  } else {
+    var days = List.generate(latestTodo.difference(earliestTodo).inDays + 1,
+        (i) => DateTime(earliestTodo.year, earliestTodo.month, earliestTodo.day + i));
+    var todoMap = toDoService.asEvents;
+    for (var day in days) {
+      print(day);
+      if (!todoMap.containsKey(day)) {
+        streak++;
+        continue;
+      }
+      var todoList = todoMap[day];
+      if (todoList.every((element) => element.isCompleted)) {
+        streak++;
+      } else {
+        if (streak > longestStreak) {
+          longestStreak = streak;
+          streak = 0;
+        }
       }
     }
-  }
-  if (streak > longestStreak) {
-    longestStreak = streak;
-  }
-
-  for (var day in days.reversed) {
-    if (!todoMap.containsKey(day)) {
-      currentStreak++;
-      continue;
+    if (streak > longestStreak) {
+      longestStreak = streak;
     }
-    var todoList = todoMap[day];
-    if (todoList.every((element) => element.isCompleted)) {
-      currentStreak++;
-    } else {
-      break;
+
+    for (var day in days.reversed) {
+      if (!todoMap.containsKey(day)) {
+        currentStreak++;
+        continue;
+      }
+      var todoList = todoMap[day];
+      if (todoList.every((element) => element.isCompleted)) {
+        currentStreak++;
+      } else {
+        break;
+      }
     }
   }
 
