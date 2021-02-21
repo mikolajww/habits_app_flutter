@@ -24,4 +24,11 @@ abstract class _ToDoCategory with Store {
         'name': name,
         'color': color.value,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is _ToDoCategory && runtimeType == other.runtimeType && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }

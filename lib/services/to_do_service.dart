@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:Habitect/data/to_do_category.dart';
@@ -27,7 +28,13 @@ bool isTheSameDay(DateTime first, DateTime other) {
 
 abstract class _ToDoService with Store {
   final GoogleAccountService googleAccountService;
+  var timer;
   _ToDoService(this.googleAccountService) {}
+
+  @action
+  Future<void> sync() async {
+    await googleAccountService.updateFile(todos);
+  }
 
   @computed
   ObservableList<ToDoItem> get completedTodayTodos =>

@@ -54,11 +54,25 @@ mixin _$ToDoService on _ToDoService, Store {
     });
   }
 
+  final _$syncAsyncAction = AsyncAction('_ToDoService.sync');
+
+  @override
+  Future<void> sync() {
+    return _$syncAsyncAction.run(() => super.sync());
+  }
+
   final _$addTodoAsyncAction = AsyncAction('_ToDoService.addTodo');
 
   @override
   Future<void> addTodo(ToDoItem toDoItem) {
     return _$addTodoAsyncAction.run(() => super.addTodo(toDoItem));
+  }
+
+  final _$fetchTodosAsyncAction = AsyncAction('_ToDoService.fetchTodos');
+
+  @override
+  Future<void> fetchTodos() {
+    return _$fetchTodosAsyncAction.run(() => super.fetchTodos());
   }
 
   final _$_ToDoServiceActionController = ActionController(name: '_ToDoService');

@@ -45,19 +45,16 @@ class _AddTodoDialogState extends State<AddTodoDialog> {
       backgroundColor: Color(0xff2e2e2e),
       child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.always,
-          child: Container(
-            height: doNotify ? 630 : 590,
-            padding: EdgeInsets.fromLTRB(32, 20, 32, 16),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(20, 32, 20, 16),
+          height: doNotify ? 640 : 590,
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.always,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  "Add a new item",
-                  style: AppStyles.MED_ROBOTO,
-                ),
+                Text("Add a new item", style: AppStyles.MED_ROBOTO),
                 SizedBox(height: 32),
                 _buildTextField(),
                 SizedBox(height: 16),
