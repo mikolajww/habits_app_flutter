@@ -1,19 +1,17 @@
-# habits_app_flutter
+# Habitect - an app to help you manage your habits
+### Calendar, push notifications, voice notes and event categories to help you organize your tasks and to assist you in managing your time.
 
-run MobX codegen with:  flutter packages pub run build_runner build
+Powered by Flutter, MobX and Google Drive API
+
+## App Showcase
+
+https://user-images.githubusercontent.com/33696209/120045047-6a931a80-c00f-11eb-9373-e95a23ead119.mp4
 
 
-A new Flutter application.
 
-## Getting Started
+## Build process
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone this repository `git clone`
+2. Open in Android Studio (or preferred IDE)
+3. Run MobX codegen with `flutter packages pub run build_runner build` when the data files have changed
+4. Run the app
